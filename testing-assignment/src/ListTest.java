@@ -18,6 +18,34 @@ public class ListTest {
     return new ArrayList<>(Arrays.asList(array));
   }
   
+/*
+ * Given multiple values of the same type, the Add operator does
+ * one of two things, (1) takes in a value of the same type (or null)
+ * and adds it to the end of the list, or (2) takes in an integer
+ * value and a value of the same type (or null), and adds the value
+ * to the list at the index specified by the integer value. In the second
+ * case, the operator will shift all values after the index to the
+ * right by one, that is, it will add 1 to their indices.
+ * 
+ * For both cases, if the list is immutable, then the operator will 
+ * throw an exception. If the class type of the list does not match
+ * the class of the element to be added, a ClassCastException will
+ * be thrown. If the add operation is not supported by the list,
+ * an UnsupportedOperationException will be thrown.
+ * If the element to be added is null, and the list does not support
+ * null elements, a NullPointerException will be thrown. If the list
+ * is of a fixed size, and the list is already at its maximum capacity,
+ * an IllegalStateException will be thrown. If some property of the
+ * element to be added prevents it from being added to the list,
+ * an IllegalArgumentException will be thrown.
+ * 
+ * (1) In the first case, the operator will return true to indicate
+ * that the value was added to the list, otherwise it will return 
+ * false if the value couldn't be added. 
+ * (2) In the second case, if the element is successsfully added,
+ * the operator will return void. If the index is out of bounds, 
+ * then the operator will throw an IndexOutOfBounds exception.
+ */
 
   @Test
   public void testAdd1(){
@@ -39,7 +67,6 @@ public class ListTest {
     assertEquals(l1, l2);
   }
 
-  
   @Test
   public void testAdd3(){
     Integer[] ar1 = {3, 4, 5};
@@ -76,11 +103,18 @@ public class ListTest {
 * and compares each value that it visits to 
 * the value that it was passed. If they are
 * equivalent, the operator returns true.
-* Otherwise the operators continues until, 
+* Otherwise the operators continues until
 * there are no more values to visit. If that
 * is the case, then the operator returns 
 * false to indicate that the passed value
-* does not exist in the given values.
+* does not exist in the given values. 
+*
+* If the value that is passed is null and the list
+* does not permit null values, then a
+* NullPointerException will be thrown. If the type
+* of the value that is passed is incompatible
+* with the list, a ClassCastException will be
+* thrown.
 */
 
    @Test
@@ -104,6 +138,13 @@ public class ListTest {
     assertFalse(l.contains("A"));
   }
 
+  @Test
+  public void testContains4(){
+    Integer[] ar = {3, 4, 5};
+    List<Integer> l = makeList(ar);
+    assertFalse(l.contains(null));
+  }
+
 /*
   * Given multiple values of the same type, the
   * Get operator takes in an integer value, and
@@ -112,7 +153,12 @@ public class ListTest {
   * count after visting a value. Once count is
   * equivalent to interger value argument, the
   * operator will return the value that it is
-  * currently visiting.
+  * currently visiting. 
+  *
+  * If the index is less than 0, or greater than 
+  * or equal to / greater than the size of the list,
+  * then the operator will throw an IndexOutOfBounds
+  * exception.
   */
 
    @Test
@@ -136,14 +182,20 @@ public class ListTest {
   * Given multiple values of the same type, the
   * IndexOf operator takes in a value and starts
   * a count at 0. It then iterates through all
-  * the given values in order, increasing the its
+  * the given values in order, increasing its
   * count by 1 after each value it visits. If the
   * operator visits a value that is equivalent to
   * the value that was passed through, it will
-  * return its count. If it does not see an 
+  * return its current count. If it does not visit an 
   * equivalent value, then it will return -1 to
   * represent that it was unable to find the
   * specified value.
+  *
+  * If the value that is passed is null and the list
+  * does not permit null values, then a NullPointerException
+  * will be thrown. If the type of the value that is passed
+  * is incompatible with the list, a ClassCastException will
+  * be thrown.
   */
 
   @Test
@@ -161,7 +213,24 @@ public class ListTest {
   }
 
 /*
+ * Given multiple values of the same type, the remove operator 
+ * takes in an integer value and starts a count at 0. It then
+ * iterates through all the given values in order, increasing
+ * the count by 1 after each value it visits. If the count is
+ * equivalent to the integer value that was passed to the remove
+ * function, then the operator will remove the value that it is 
+ * currently visiting by shifting all the values after the
+ * element to be removed to the left by 1 
+ * (i.e. subtract 1 from their indices), and return that
+ * removed element. If the count is not equivalent to the integer 
+ * value that was passed to the remove function, then the operator 
+ * will continue to iterate through the values. 
  * 
+ * If the integer value that was passed to the remove function is
+ * less than 0 or greater than or equal to the size of the list, 
+ * then the operator will throw an IndexOutofBoundsException. 
+ * If the remove function is not supported by the list, then the
+ * operator will throw an UnsupportedOperationException.
  */
 
   @Test
@@ -238,7 +307,12 @@ public class ListTest {
   * count reaches the value equivalent to the start
   * index, it stores its respective value. It then
   * stores all values until the count is equivalent
-  * to the end index value.
+  * to the end index value. The operator then returns
+  * a list of all the values that it stored.
+  *
+  * If the start index or end index are less than 0, 
+  * or greater than or equal to the size of the list, 
+  * then the operator will throw an IndexOutOfBounds exception.
   */
 
   @Test
